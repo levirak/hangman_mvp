@@ -1,9 +1,19 @@
+body {
+    font-size: 30pt;
+}
+
 #container {
+    margin: auto;
     width: 360pt;
-    background-color: blue;
+    text-align: center;
 }
 
 #hanged {
     width: inherit;
-    background-color: blue;
+}
+
+.good-guess-letter {
+    text-decoration: underline;
+    display: inline-block;
+    padding: 2px;
 }
