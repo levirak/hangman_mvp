@@ -2,6 +2,10 @@ body {
     font-size: 30pt;
 }
 
+#start-game {
+    margin: auto;
+}
+
 #container {
     margin: auto;
     width: 360pt;
@@ -12,7 +16,7 @@ body {
     width: inherit;
 }
 
-.good-guess-letter {
+.guessed-letter {
     text-decoration: underline;
     display: inline-block;
     padding: 2px;

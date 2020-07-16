@@ -17,9 +17,11 @@ let wordList = [
     'prestidigitation',
     'cat',
     'exponential',
-    'javascript',
+    'Javascript',
     'dog',
     'ferret',
+    'candy',
+    'Germany',
 ]
 
 function sample(list)
@@ -42,10 +44,9 @@ function Game()
     }
 
     this.displayText = function(text) {
-        this.textDisplay.textContent = text
+        this.textDisplay.innerText = text
     }
 
-    this.guessed = {}
     this.guess = function(letter) {
         this.displayText('') // clear text display
 
@@ -54,17 +55,19 @@ function Game()
         }
         else {
             this.guessed[letter] = true
+            this.updateGuessDisplay()
 
             if (this.word.indexOf(letter) === -1) {
                 // bad guess
 
                 this.setHangedState(this.hangedState + 1)
-
                 if (this.hangedState >= endState) {
-                    this.end('Game Over\nOut of guesses.')
+                    this.end('Game Over\nOut of guesses.\nThe word was "'+this.word+'"')
                 }
             }
             else {
+                // good guess
+
                 let gameWon = this.updateWordDisplay()
                 if (gameWon) {
                     this.end('You Win\nCongradulations!')
@@ -83,12 +86,22 @@ function Game()
                 gameWon = false
             }
 
-            newHTML += '<span class="good-guess-letter">'+letter+'</span>'
+            newHTML += '<span class="guessed-letter">'+letter+'</span>'
         }
 
         this.goodGuessDisplay.innerHTML = newHTML
 
         return gameWon
+    }
+
+    this.updateGuessDisplay = function() {
+        let newHTML = ''
+
+        for (let letter in this.guessed) {
+            newHTML += '<span class="guessed-letter">'+letter+'</span>'
+        }
+
+        this.allGuessDisplay.innerHTML = newHTML
     }
 
     let _this = this
@@ -109,15 +122,18 @@ function Game()
     this.startButton = document.getElementById('start-game')
     this.hanged = document.getElementById('hanged')
     this.goodGuessDisplay = document.getElementById('good-guess-display')
-    this.badGuessDisplay = document.getElementById('bad-guess-display')
+    this.allGuessDisplay = document.getElementById('all-guess-display')
     this.textDisplay = document.getElementById('text-display')
 
     // initialize game state
+    this.guessed = {}
     this.word = sample(wordList)
     this.setHangedState(0)
 
     // set up display
     this.startButton.style.display = 'none'
+    this.displayText('')
     this.updateWordDisplay()
+    this.updateGuessDisplay()
     document.addEventListener('keydown', this.onKeyDown)
 }

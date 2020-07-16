@@ -9,16 +9,19 @@
 <body>
   <div id="container">
     <img id="hanged" src="img/hanged0.png">
-    <div id="guess-display">
+    <div>
       <div id="good-guess-display">
+        <!-- game will display the chosen word here -->
       </div>
-      <div id="bad-guess-display">
+      <hr>
+      <div id="all-guess-display">
+        <!-- game will display guessed letters here -->
       </div>
     </div>
-    <button id="start-game" onclick="new Game()">Start new game.</button>
     <div id="text-display">
       <!-- game will display text feedback here -->
     </div>
+    <button id="start-game" onclick="new Game()">Start new game.</button>
   </div>
 </body>
 </html>
