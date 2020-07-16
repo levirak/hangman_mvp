@@ -12,16 +12,18 @@ let stateLookup = [
 let endState = stateLookup.length - 1
 
 let wordList = [
-    'jazz',
-    'pony',
-    'prestidigitation',
     'cat',
-    'exponential',
-    'Javascript',
+    'rat',
     'dog',
+    'pony',
+    'jazz',
     'ferret',
     'candy',
     'Germany',
+    'England',
+    'JavaScript',
+    'exponential',
+    'prestidigitation',
 ]
 
 function sample(list)
@@ -32,15 +34,15 @@ function sample(list)
 function Game()
 {
     this.setHangedState = function(newState) {
-        let set = false
-
         if (0 <= newState && newState < stateLookup.length) {
             this.hangedState = newState
-            this.hanged.src = stateLookup[newState]
-            set = true
+            this.hangedMan.src = stateLookup[newState]
         }
+    }
 
-        return set
+    this.setWord = function(word) {
+        this.word = word
+        this.lowerCaseWord = word.toLowerCase()
     }
 
     this.displayText = function(text) {
@@ -48,7 +50,7 @@ function Game()
     }
 
     this.guess = function(letter) {
-        this.displayText('') // clear text display
+        this.displayText('')
 
         if (this.guessed[letter]) {
             this.displayText('You have already guessed "'+letter+'".')
@@ -57,7 +59,7 @@ function Game()
             this.guessed[letter] = true
             this.updateGuessDisplay()
 
-            if (this.word.indexOf(letter) === -1) {
+            if (this.lowerCaseWord.indexOf(letter) === -1) {
                 // bad guess
 
                 this.setHangedState(this.hangedState + 1)
@@ -81,7 +83,7 @@ function Game()
         let gameWon = true
 
         for (let letter of this.word) {
-            if (this.guessed[letter.toLowerCase()] === undefined) {
+            if (!this.guessed[letter.toLowerCase()]) {
                 letter = '&nbsp;'
                 gameWon = false
             }
@@ -104,30 +106,31 @@ function Game()
         this.allGuessDisplay.innerHTML = newHTML
     }
 
-    let _this = this
-    this.onKeyDown = function(event) {
+    this.onKeyDown = (function(event) {
         if (event.key.match(/^[a-zA-Z]$/)) {
-            _this.guess(event.key.toLowerCase())
+            this.guess(event.key.toLowerCase())
         }
-    }
+    }).bind(this)
 
     this.end = function(message) {
-        this.displayText(message)
+        // disarm the game
         document.removeEventListener('keydown', this.onKeyDown)
 
+        // set up display
+        this.displayText(message)
         this.startButton.style.display = 'block'
     }
 
     // get references to our HTML elements
     this.startButton = document.getElementById('start-game')
-    this.hanged = document.getElementById('hanged')
+    this.hangedMan = document.getElementById('hanged')
     this.goodGuessDisplay = document.getElementById('good-guess-display')
     this.allGuessDisplay = document.getElementById('all-guess-display')
     this.textDisplay = document.getElementById('text-display')
 
     // initialize game state
     this.guessed = {}
-    this.word = sample(wordList)
+    this.setWord(sample(wordList))
     this.setHangedState(0)
 
     // set up display
@@ -135,5 +138,7 @@ function Game()
     this.displayText('')
     this.updateWordDisplay()
     this.updateGuessDisplay()
+
+    // arm the game
     document.addEventListener('keydown', this.onKeyDown)
 }

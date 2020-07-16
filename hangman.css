@@ -2,6 +2,11 @@ body {
     font-size: 30pt;
 }
 
+.hint-text {
+    font-size: 12pt;
+    text-align: left;
+}
+
 #start-game {
     margin: auto;
 }
