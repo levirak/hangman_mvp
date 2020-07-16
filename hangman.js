@@ -9,32 +9,52 @@ let stateLookup = [
     'img/hanged5.png',
     'img/hanged6.png',
 ];
+let endState = stateLookup.length - 1
 
-function guessKey(event)
+function Game()
 {
-    if (65 <= event.keyCode && event.keyCode <= 90) {
-        let letter = String.fromCharCode(event.keyCode)
-        console.log(event, letter)
-    }
-}
-
-function Game() {
-    this.setHangedState = function(newState) {
-        let incremented = false
+    this.setHangedState = (newState) => {
+        let set = false
 
         if (0 <= newState && newState < stateLookup.length) {
-            this.state = newState
+            this.hangedState = newState
             this.hanged.src = stateLookup[newState]
-            incremented = true;
+            set = true;
         }
 
-        return incremented
+        return set
     }
 
-    this.hanged = document.getElementById('hanged')
-    this.state = 0
+    this.onKeyDown = (event) => {
+        // NOTE: must use arrow function so that `this` is correctly captured
+
+        if (event.key.match(/^[a-zA-Z]$/)) {
+            // a letter was guessed
+
+            let letter = event.key.toLowerCase()
+            console.log(event, letter)
+
+            this.setHangedState(this.hangedState + 1)
+
+            if (this.hangedState >= endState) {
+                this.end()
+            }
+        }
+    }
+
     this.end = () => {
+        console.log('Game Over')
+        document.removeEventListener('keydown', this.onKeyDown)
+
+        this.button.style.display = 'block'
     }
 
-    this.setHangedState
+    this.button = document.getElementById('start-game')
+    this.hanged = document.getElementById('hanged')
+
+    this.hangedState = 0
+    this.setHangedState(this.hangedState)
+
+    this.button.style.display = 'none'
+    document.addEventListener('keydown', this.onKeyDown)
 }

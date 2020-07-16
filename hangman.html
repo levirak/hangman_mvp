@@ -4,18 +4,15 @@
   <title>Minimum Viable Hangman</title>
   <link rel="stylesheet" href=hangman.css>
   <script type="text/javascript" src="hangman.js"></script>
-  <script type="text/javascript">
-    document.addEventListener('keydown', guessKey)
-  </script>
   <meta charset="UTF-8">
 </head>
 <body>
   <div id="container">
-    <img id="hanged" data-state=0 src="img/hanged0.png">
+    <img id="hanged" src="img/hanged0.png">
     <div id="guess-display">
       <!-- TODO(lrak): guess display -->
     </div>
-    <button onclick="incrementHangedState()">Hang the man!</button>
+    <button id="start-game" onclick="new Game()">Start new game.</button>
   </div>
 </body>
 </html>
