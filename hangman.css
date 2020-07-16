@@ -1,0 +1,9 @@
+#container {
+    width: 360pt;
+    background-color: blue;
+}
+
+#hanged {
+    width: inherit;
+    background-color: blue;
+}
